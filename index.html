@@ -17,17 +17,15 @@
         /* GIF Container - စာသားအပေါ်မှာထားမယ် */
         #gifContainer {
             width: 100%;
-            max-width: 400px;
-            height: 250px;
-            display: none; /* "Yes" နှိပ်မှ ပေါ်မယ် */
+            max-width: 320px;
+            display: none; /* စစချင်း ဖျောက်ထားမယ် */
             margin-bottom: 20px;
-            z-index: 1;
         }
 
-        #bgGif {
+        #fireworksGif {
             width: 100%;
-            height: 100%;
-            object-fit: contain; /* GIF ပုံမပျက်စေရန် */
+            height: auto;
+            border-radius: 10px;
         }
 
         #typewriter, #successText {
@@ -55,7 +53,6 @@
         .emoji-wrapper {
             position: absolute; left: 50%; transform: translateX(-50%);
             display: flex; align-items: center; transition: left 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            z-index: 5;
         }
 
         #mainEmoji { font-size: 50px; user-select: none; }
@@ -63,14 +60,12 @@
 
         @keyframes punchAction {
             0% { transform: scale(0); opacity: 0; }
-            50% { transform: scale(1.1) translateX(8px); opacity: 1; }
-            100% { transform: scale(1) translateX(4px); opacity: 1; }
+            100% { transform: scale(1.1) translateX(8px); opacity: 1; }
         }
 
         @keyframes flyAway { to { transform: translate(800px, 50px) rotate(450deg); opacity: 0; } }
 
         #successScreen { display: none; padding: 20px; width: 90%; max-width: 450px; position: relative; z-index: 2; }
-        .small-emojis { font-size: 25px; margin-top: 25px; opacity: 0.8; }
         .cursor { animation: blink 0.7s infinite; color: #FFFFFF; }
         @keyframes blink { 50% { opacity: 0; } }
     </style>
@@ -78,7 +73,7 @@
 <body>
 
     <div id="gifContainer">
-        <img id="bgGif" src="fireworks.gif" alt="fireworks">
+        <img id="fireworksGif" src="fireworks.gif" alt="Surprise!">
     </div>
 
     <audio id="bgMusic" preload="auto">
@@ -100,7 +95,6 @@
 
     <div id="successScreen">
         <div id="successText"></div>
-        <div class="small-emojis">💍 💖 ✨</div>
     </div>
 
     <script>
@@ -145,13 +139,14 @@
 
         function celebrate() {
             const music = document.getElementById('bgMusic');
-            const gifContainer = document.getElementById('gifContainer');
+            const gifBox = document.getElementById('gifContainer');
             
-            music.currentTime = 65; 
-            music.play().catch(e => console.log("Music error"));
+            // GIF ကို အပေါ်မှာ ပြသရန်
+            gifBox.style.display = 'block';
 
-            // GIF ကို အပေါ်မှာ ပြသခြင်း
-            gifContainer.style.display = 'block';
+            // Music Play ရန်
+            music.currentTime = 65; 
+            music.play().catch(e => console.log("Music error:", e));
 
             document.getElementById('mainContent').style.display = 'none';
             document.getElementById('successScreen').style.display = 'block';
@@ -170,3 +165,4 @@
     </script>
 </body>
 </html>
+
