@@ -33,6 +33,7 @@
         }
         .btn:active { transform: scale(0.95); }
 
+        /* Dark Blue & Dark Red */
         #yesBtn { width: 80px; height: 45px; background-color: #0356C5; font-size: 15px; }
         #noBtn { width: 80px; height: 45px; background-color: #8B0000; font-size: 15px; }
 
@@ -44,8 +45,11 @@
 
         #mainEmoji { font-size: 50px; user-select: none; }
 
+        /* လက်သီးလေးကို ပိုသေးပေးထားပါတယ် */
         #fistEmoji {
-            font-size: 20px; margin-left: -2px; display: none;
+            font-size: 20px; 
+            margin-left: -2px; 
+            display: none;
             filter: drop-shadow(0 3px 6px rgba(0,0,0,0.4));
         }
 
@@ -137,108 +141,9 @@
         function celebrate() {
             const music = document.getElementById('bgMusic');
             
-            // "Yes" ကိုနှိပ်လိုက်တာနဲ့ သီချင်းစဖွင့်မယ်
-            music.currentTime = 65; // 1:05 ကနေစမယ်
-            music.volume = 0.8; // Volume ကို နည်းနည်း မြှင့်ထားပေးတယ်
-            
-            // Play promise နဲ့ သေချာအောင် လုပ်ခြင်း
-            var playPromise = music.play();
-            if (playPromise !== undefined) {
-                playPromise.then(_ => {
-                    console.log("Music started successfully");
-                }).catch(error => {
-                    console.log("Playback failed. Error: ", error);
-                });
-            }
-
-            document.getElementById('mainContent').style.display = 'none';
-            document.getElementById('successScreen').style.display = 'block';
-            
-            if (idx2 === 0) typeWriter2();
-        }
-
-        function typeWriter2() {
-            if (idx2 < secondText.length) {
-                let char = secondText.charAt(idx2);
-                document.getElementById("successText").innerHTML += (char === "\n" ? "<br>" : char);
-                idx2++;
-                setTimeout(typeWriter2, 60);
-            }
-        }
-    </script>
-</body>
-</html>
-                    setTimeout(() => noBtn.style.display = "none", 800);
-                }, 400);
-            }, 400);
-        }
-
-        function celebrate() {
-            const music = document.getElementById('bgMusic');
-            music.currentTime = 65; // 1:05 Start
-            music.volume = 0.6;
-            
-            // Yes နှိပ်လိုက်တာနဲ့ အသံထွက်လာအောင် အတင်းဖွင့်ခိုင်းခြင်း
-            var playPromise = music.play();
-            if (playPromise !== undefined) {
-                playPromise.then(_ => {
-                    console.log("Playback started");
-                }).catch(error => {
-                    console.log("Playback failed");
-                });
-            }
-
-            document.getElementById('mainContent').style.display = 'none';
-            document.getElementById('successScreen').style.display = 'block';
-            if (idx2 === 0) typeWriter2();
-        }
-
-        function typeWriter2() {
-            if (idx2 < secondText.length) {
-                let char = secondText.charAt(idx2);
-                document.getElementById("successText").innerHTML += (char === "\n" ? "<br>" : char);
-                idx2++;
-                setTimeout(typeWriter2, 60);
-            }
-        }
-    </script>
-</body>
-</html>
-        }
-
-        function handlePunch(event) {
-            event.stopPropagation();
-            const wrapper = document.getElementById('emojiWrap');
-            const mainEmoji = document.getElementById('mainEmoji');
-            const fist = document.getElementById('fistEmoji');
-            const noBtn = document.getElementById('noBtn');
-            const punchSound = document.getElementById('punchSound');
-
-            mainEmoji.innerHTML = "😡";
-            wrapper.style.left = "75%"; 
-
-            setTimeout(() => {
-                fist.style.display = "inline-block";
-                fist.style.animation = "punchAction 0.2s forwards";
-                punchSound.play();
-                
-                noBtn.style.animation = "flyAway 0.8s forwards";
-
-                setTimeout(() => {
-                    fist.style.display = "none";
-                    mainEmoji.innerHTML = "🙄";
-                    wrapper.style.left = "50%";
-                    setTimeout(() => noBtn.style.display = "none", 800);
-                }, 400);
-            }, 400);
-        }
-
-        function celebrate() {
-            const music = document.getElementById('bgMusic');
-            
             // Yes နှိပ်မှ သီချင်းပွင့်မယ်၊ 1:05 ကနေစမယ်
             music.currentTime = 65; 
-            music.volume = 0.6;
+            music.volume = 0.8;
             
             // Interaction ဖြစ်တဲ့အတွက် သေချာပေါက် ပွင့်လာမှာပါ
             music.play().then(() => {
