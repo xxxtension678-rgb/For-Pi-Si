@@ -14,28 +14,43 @@
             font-family: 'JetBrains+Mono', monospace; overflow: hidden; text-align: center;
         }
 
+        /* GIF Container - စာသားအပေါ်မှာထားမယ် */
+        #gifContainer {
+            width: 100%;
+            max-width: 400px;
+            height: 250px;
+            display: none; /* "Yes" နှိပ်မှ ပေါ်မယ် */
+            margin-bottom: 20px;
+            z-index: 1;
+        }
+
+        #bgGif {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* GIF ပုံမပျက်စေရန် */
+        }
+
         #typewriter, #successText {
             font-size: 16px; color: #FFFFFF; line-height: 1.8;
-            letter-spacing: 1px; margin-bottom: 50px; min-height: 30px;
+            letter-spacing: 1px; min-height: 30px;
+            position: relative; z-index: 2;
         }
 
         .stage {
             position: relative; width: 320px; height: 120px;
             display: flex; justify-content: space-between; align-items: center;
-            opacity: 0; transition: opacity 0.6s ease-in;
+            opacity: 0; transition: opacity 0.6s ease-in; z-index: 2;
         }
 
         .btn {
             border: none; color: white; cursor: pointer; font-weight: 500;
+            width: 80px; height: 45px; border-radius: 8px;
             display: flex; justify-content: center; align-items: center;
-            transition: transform 0.2s ease; border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
-        .btn:active { transform: scale(0.95); }
 
-        /* Dark Blue & Dark Red */
-        #yesBtn { width: 80px; height: 45px; background-color: #0356C5; font-size: 15px; }
-        #noBtn { width: 80px; height: 45px; background-color: #8B0000; font-size: 15px; }
+        #yesBtn { background-color: #0356C5; }
+        #noBtn { background-color: #8B0000; }
 
         .emoji-wrapper {
             position: absolute; left: 50%; transform: translateX(-50%);
@@ -44,14 +59,7 @@
         }
 
         #mainEmoji { font-size: 50px; user-select: none; }
-
-        /* လက်သီးလေးကို ပိုသေးပေးထားပါတယ် */
-        #fistEmoji {
-            font-size: 20px; 
-            margin-left: -2px; 
-            display: none;
-            filter: drop-shadow(0 3px 6px rgba(0,0,0,0.4));
-        }
+        #fistEmoji { font-size: 20px; margin-left: -2px; display: none; }
 
         @keyframes punchAction {
             0% { transform: scale(0); opacity: 0; }
@@ -59,17 +67,19 @@
             100% { transform: scale(1) translateX(4px); opacity: 1; }
         }
 
-        @keyframes flyAway {
-            to { transform: translate(800px, 50px) rotate(450deg); opacity: 0; }
-        }
+        @keyframes flyAway { to { transform: translate(800px, 50px) rotate(450deg); opacity: 0; } }
 
-        #successScreen { display: none; padding: 20px; width: 90%; max-width: 450px; }
+        #successScreen { display: none; padding: 20px; width: 90%; max-width: 450px; position: relative; z-index: 2; }
         .small-emojis { font-size: 25px; margin-top: 25px; opacity: 0.8; }
         .cursor { animation: blink 0.7s infinite; color: #FFFFFF; }
         @keyframes blink { 50% { opacity: 0; } }
     </style>
 </head>
 <body>
+
+    <div id="gifContainer">
+        <img id="bgGif" src="fireworks.gif" alt="fireworks">
+    </div>
 
     <audio id="bgMusic" preload="auto">
         <source src="music.mp3" type="audio/mpeg">
@@ -112,23 +122,18 @@
         }
 
         function handlePunch(event) {
-            event.stopPropagation();
             const wrapper = document.getElementById('emojiWrap');
             const mainEmoji = document.getElementById('mainEmoji');
             const fist = document.getElementById('fistEmoji');
             const noBtn = document.getElementById('noBtn');
             const punchSound = document.getElementById('punchSound');
-
             mainEmoji.innerHTML = "😡";
             wrapper.style.left = "75%"; 
-
             setTimeout(() => {
                 fist.style.display = "inline-block";
                 fist.style.animation = "punchAction 0.2s forwards";
                 punchSound.play();
-                
                 noBtn.style.animation = "flyAway 0.8s forwards";
-
                 setTimeout(() => {
                     fist.style.display = "none";
                     mainEmoji.innerHTML = "🙄";
@@ -140,17 +145,13 @@
 
         function celebrate() {
             const music = document.getElementById('bgMusic');
+            const gifContainer = document.getElementById('gifContainer');
             
-            // Yes နှိပ်မှ သီချင်းပွင့်မယ်၊ 1:05 ကနေစမယ်
             music.currentTime = 65; 
-            music.volume = 0.8;
-            
-            // Interaction ဖြစ်တဲ့အတွက် သေချာပေါက် ပွင့်လာမှာပါ
-            music.play().then(() => {
-                console.log("Music started at 1:05");
-            }).catch(e => {
-                console.log("Retry needed");
-            });
+            music.play().catch(e => console.log("Music error"));
+
+            // GIF ကို အပေါ်မှာ ပြသခြင်း
+            gifContainer.style.display = 'block';
 
             document.getElementById('mainContent').style.display = 'none';
             document.getElementById('successScreen').style.display = 'block';
