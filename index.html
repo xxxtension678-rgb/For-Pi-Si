@@ -7,62 +7,40 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        
         body {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             height: 100vh; margin: 0; background-color: #000000;
             font-family: 'JetBrains+Mono', monospace; overflow: hidden; text-align: center;
         }
-
         #typewriter, #successText {
             font-size: 16px; color: #FFFFFF; line-height: 1.8;
             letter-spacing: 1px; margin-bottom: 50px; min-height: 30px;
         }
-
         .stage {
             position: relative; width: 320px; height: 120px;
             display: flex; justify-content: space-between; align-items: center;
             opacity: 0; transition: opacity 0.6s ease-in;
         }
-
         .btn {
             border: none; color: white; cursor: pointer; font-weight: 500;
             display: flex; justify-content: center; align-items: center;
             transition: transform 0.2s ease; border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.5);
         }
-        .btn:active { transform: scale(0.95); }
-
-        /* Dark Blue & Dark Red */
         #yesBtn { width: 80px; height: 45px; background-color: #0356C5; font-size: 15px; }
         #noBtn { width: 80px; height: 45px; background-color: #8B0000; font-size: 15px; }
-
         .emoji-wrapper {
             position: absolute; left: 50%; transform: translateX(-50%);
             display: flex; align-items: center; transition: left 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             z-index: 5;
         }
-
         #mainEmoji { font-size: 50px; user-select: none; }
-
-        /* လက်သီးလေးကို ပိုသေးပေးထားပါတယ် */
-        #fistEmoji {
-            font-size: 20px; 
-            margin-left: -2px; 
-            display: none;
-            filter: drop-shadow(0 3px 6px rgba(0,0,0,0.4));
-        }
-
+        #fistEmoji { font-size: 20px; margin-left: -2px; display: none; }
         @keyframes punchAction {
             0% { transform: scale(0); opacity: 0; }
-            50% { transform: scale(1.1) translateX(8px); opacity: 1; }
             100% { transform: scale(1) translateX(4px); opacity: 1; }
         }
-
-        @keyframes flyAway {
-            to { transform: translate(800px, 50px) rotate(450deg); opacity: 0; }
-        }
-
+        @keyframes flyAway { to { transform: translate(800px, 50px) rotate(450deg); opacity: 0; } }
         #successScreen { display: none; padding: 20px; width: 90%; max-width: 450px; }
         .small-emojis { font-size: 25px; margin-top: 25px; opacity: 0.8; }
         .cursor { animation: blink 0.7s infinite; color: #FFFFFF; }
@@ -71,8 +49,9 @@
 </head>
 <body>
 
-    <audio id="bgMusic" preload="auto">
-        <source src="https://www.mboxdrive.com/Why%20Don't%20We%20-%208%20Letters%20[Official%20Instrumental].mp3" type="audio/mpeg">
+    <audio id="bgMusic" preload="auto" crossorigin="anonymous">
+        <source src="https://dl.dropboxusercontent.com/scl/fi/v6t8v9h3x7w8y9z0/8-letters-inst.mp3?rlkey=xyz123&dl=0" type="audio/mpeg">
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
     </audio>
     <audio id="punchSound" src="https://www.soundjay.com/human/sounds/punch-02.mp3" preload="auto"></audio>
 
@@ -109,6 +88,63 @@
                 document.querySelector(".cursor").style.display = "none";
                 document.getElementById("buttonStage").style.opacity = "1";
             }
+        }
+
+        function handlePunch(event) {
+            event.stopPropagation();
+            const wrapper = document.getElementById('emojiWrap');
+            const mainEmoji = document.getElementById('mainEmoji');
+            const fist = document.getElementById('fistEmoji');
+            const noBtn = document.getElementById('noBtn');
+            const punchSound = document.getElementById('punchSound');
+
+            mainEmoji.innerHTML = "😡";
+            wrapper.style.left = "75%"; 
+            setTimeout(() => {
+                fist.style.display = "inline-block";
+                fist.style.animation = "punchAction 0.2s forwards";
+                punchSound.play();
+                noBtn.style.animation = "flyAway 0.8s forwards";
+                setTimeout(() => {
+                    fist.style.display = "none";
+                    mainEmoji.innerHTML = "🙄";
+                    wrapper.style.left = "50%";
+                    setTimeout(() => noBtn.style.display = "none", 800);
+                }, 400);
+            }, 400);
+        }
+
+        function celebrate() {
+            const music = document.getElementById('bgMusic');
+            music.currentTime = 65; // 1:05 Start
+            music.volume = 0.6;
+            
+            // Yes နှိပ်လိုက်တာနဲ့ အသံထွက်လာအောင် အတင်းဖွင့်ခိုင်းခြင်း
+            var playPromise = music.play();
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    console.log("Playback started");
+                }).catch(error => {
+                    console.log("Playback failed");
+                });
+            }
+
+            document.getElementById('mainContent').style.display = 'none';
+            document.getElementById('successScreen').style.display = 'block';
+            if (idx2 === 0) typeWriter2();
+        }
+
+        function typeWriter2() {
+            if (idx2 < secondText.length) {
+                let char = secondText.charAt(idx2);
+                document.getElementById("successText").innerHTML += (char === "\n" ? "<br>" : char);
+                idx2++;
+                setTimeout(typeWriter2, 60);
+            }
+        }
+    </script>
+</body>
+</html>
         }
 
         function handlePunch(event) {
